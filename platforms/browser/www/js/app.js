@@ -15,6 +15,7 @@ var isPaused = true;
 var isStart = true;
 var holes = [];
 
+// Gets the device's orientation to move the ball
 function move(e) {
   y = Math.floor(map(e.gamma, -10, 10, -1, 1, true));
   x = Math.floor(map(e.beta, -10, 10, -1, 1, true));
@@ -55,8 +56,7 @@ function setup() {
 };
 
 function mousePressed() {
-  console.log(mouseX);
-  console.log(mouseY);
+  // Checks if finger click is over the button
   if (mouseX > (window.innerWidth / 2) - 125 &&
     mouseX < (window.innerWidth / 2) + 125 &&
     mouseY > (window.innerHeight / 2) + 125 &&
@@ -82,14 +82,17 @@ function draw() {
   ball.draw();
   displayScore();
 
+  // Draw all holes from holes array
   for (let hole of holes) {
     stroke(b, r, g);
     hole.draw();
+    // Check if the ball hits a hole
     if (ball.intersects(hole)) {
       isPaused = true;
     }
   }
 
+  // Check if the ball intersects the goal
   if (ball.intersects(goal)) {
     ball.reset();
     maxSpeed += 0.1;
@@ -104,6 +107,7 @@ function draw() {
 
 };
 
+// Ball object
 function Ball() {
   this.x = 50;
   this.y = (window.innerWidth / 2);
@@ -147,6 +151,7 @@ function Ball() {
   }
 }
 
+// Hole object
 function Hole(x, y, r) {
   this.x = x;
   this.y = y;
@@ -158,6 +163,7 @@ function Hole(x, y, r) {
   };
 }
 
+// Goal object
 function Goal(x, y, w) {
   this.x = x;
   this.y = y;
@@ -173,6 +179,7 @@ function Goal(x, y, w) {
 
 }
 
+// Creates a new hole at random x, y and adds it to the array of holes
 function addHole() {
   let y = Math.floor(Math.random() * Math.floor(window.innerHeight));
   let x = Math.floor(Math.random() * Math.floor(window.innerWidth));
@@ -184,12 +191,14 @@ function addHole() {
   holes.push(hole);
 }
 
+// Changes random r,g,b values
 function changeColor() {
   r = random(255);
   g = random(255);
   b = random(255);
 }
 
+// Displays the score in the top corner
 function displayScore() {
   let score = holes.length;
   push();
@@ -202,10 +211,10 @@ function displayScore() {
   pop();
 }
 
+// Creates a windwo with text and a button
 function interact(infoText, btnText) {
   let wPadding = 50;
   let hPadding = 100;
-
   let btn = new Button(btnText);
 
   push();
@@ -228,6 +237,7 @@ function interact(infoText, btnText) {
   pop();
 }
 
+// Button objects
 function Button(btnText) {
   this.w = 250;
   this.h = 75;
