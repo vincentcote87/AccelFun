@@ -11,8 +11,9 @@ var ySpeed = 0.0;
 var maxSpeed = 1.0;
 var goal = new Goal(((window.innerWidth / 2)), (window.innerHeight - 75), 50);
 var r, g, b;
+var isPaused = true;
+var isStart = true;
 
-// var hole = new Hole();
 var holes = [];
 
 
@@ -45,26 +46,41 @@ function setup() {
   addHole();
 };
 
+function mousePressed() {
+  console.log(mouseX);
+  console.log(mouseY);
+  if (mouseX > window.innerWidth - 175 &&
+      mouseX < window.innerWidth - 100 &&
+      mouseY > (window.innerHeight / 2) - 125 &&
+      mouseY < (window.innerHeight / 2) + 125) {
+        if (isPaused) {
+          isPaused = false;
+          isStart = false;
+          holes = [];
+          maxSpeed = 1.0;
+          ball.reset();
+          addHole();
+          changeColor();
+        }
+      }
+
+}
+
 function draw() {
   background(r, g, b);
   fill(255, 35, 255);
   goal.draw();
-  // rect(((window.innerWidth / 2) - 25), (window.innerHeight - 75), 50, 50);
-  ball.move((1 * xSpeed), (1 * ySpeed));
+  if (!isPaused)
+    ball.move((1 * xSpeed), (1 * ySpeed));
   ball.draw();
-  
+  displayScore();
+
   for (let hole of holes) {
     stroke(b,r,g);
     hole.draw();
-    // console.log(ball.intersects(hole));
     if (ball.intersects(hole)) {
-      holes = [];
-      maxSpeed = 1.0;
-      ball.reset();
-      addHole();
-      changeColor();
+      isPaused = true;
     }
-      // console.log("intersect");
   }
 
   if (ball.intersects(goal)) {
@@ -74,6 +90,14 @@ function draw() {
     maxSpeed += 0.1;
     addHole();
     changeColor();
+  }
+  if (isStart) {
+    interact('Get the green ball to the pink \n box without touching the black balls', 'START');
+    // isStart = false;
+  }
+
+  else if (isPaused) {
+    interact(`Your score is ${holes.length}`, 'TRY AGAIN')
   }
 
 };
@@ -141,9 +165,11 @@ function Goal(x,y,w) {
   this.r = w / 2;
 
   this.draw = function() {
-    noStroke();
+    // noStroke();
+    stroke(255,255,255);
+    strokeWeight(5)
     fill(255, 35, 255);
-    rect(this.x - this.r, this.y - this.r / 2, this.w, this.w);
+    rect(this.x - this.r, this.y - this.r / 2, this.w, this.w, 10);
   }
 
 }
@@ -167,3 +193,69 @@ function changeColor() {
   b = random(255);
 }
 
+function displayScore() {
+  let score = holes.length;
+  push();
+  textSize(32);
+  stroke(255,35,255);
+  fill(148, 0, 211);
+  strokeWeight(3);
+  translate(50, 50);
+  rotate(-HALF_PI);
+  // translate(-100, -100);
+  text(score, 0, 0);
+  pop();
+
+}
+
+function interact(infoText, btnText) {
+  let wPadding = 50;
+  let hPadding = 100;
+
+  let btn = new Button(btnText);
+
+  push();
+  stroke(0,0,0);
+  strokeWeight(10);
+  fill(255, 255, 255);
+  rect(wPadding, hPadding, (window.innerWidth - (wPadding * 2)), (window.innerHeight - (hPadding * 2)), 30);
+  pop();
+
+  push();
+  noStroke();
+  fill(0,0,0);
+  textSize(28);
+  textAlign(CENTER, CENTER);
+  translate(150, (window.innerWidth - 50));
+  rotate(-HALF_PI);
+  text(infoText, 0, 0);
+  pop();
+
+  push();
+  btn.draw();
+  pop();
+}
+
+function Button(btnText) {
+  this.w = 75;
+  this.h = 250;
+  this.x = window.innerWidth - 175;
+  this.y = (window.innerHeight / 2) - 125;
+
+  this.draw = function() {
+    fill(148, 0, 211);
+    stroke(255, 35, 255);
+    strokeWeight(3);
+    rect(this.x, this.y, this.w, this.h, this.w);
+    push();
+    noStroke();
+    fill(255);
+    textSize(28);
+    textAlign(CENTER, CENTER);
+    translate(this.x + (this.w / 2), (window.innerWidth - 50));
+    rotate(-HALF_PI);
+    text(btnText, 0, 0);
+    pop();
+    // rect(100, 100, 100, 100);
+  }
+}
