@@ -13,30 +13,38 @@ var goal = new Goal(((window.innerWidth / 2)), (window.innerHeight - 75), 50);
 var r, g, b;
 var isPaused = true;
 var isStart = true;
-
 var holes = [];
-
 
 function move(e) {
   y = Math.floor(map(e.gamma, -10, 10, -1, 1, true));
   x = Math.floor(map(e.beta, -10, 10, -1, 1, true));
   switch (x) {
-    case 1: xSpeed = maxSpeed; break;
-    case 0: xSpeed = 0.0; break;
-    case -1: xSpeed = -maxSpeed; break;
-    default: xSpeed = 0.0;
+    case 1:
+      xSpeed = maxSpeed;
+      break;
+    case 0:
+      xSpeed = 0.0;
+      break;
+    case -1:
+      xSpeed = -maxSpeed;
+      break;
+    default:
+      xSpeed = 0.0;
   }
 
   switch (y) {
-    case 1: ySpeed = maxSpeed; break;
-    case 0: ySpeed = 0.0; break;
-    case -1: ySpeed = -maxSpeed; break;
-    default: ySpeed = 0.0;
+    case 1:
+      ySpeed = maxSpeed;
+      break;
+    case 0:
+      ySpeed = 0.0;
+      break;
+    case -1:
+      ySpeed = -maxSpeed;
+      break;
+    default:
+      ySpeed = 0.0;
   }
-  // $('#alpha').html(z);
-  // $('#beta').html(y);
-  // $('#gamma').html(x);
-
 };
 
 function setup() {
@@ -50,20 +58,19 @@ function mousePressed() {
   console.log(mouseX);
   console.log(mouseY);
   if (mouseX > (window.innerWidth / 2) - 125 &&
-      mouseX < (window.innerWidth / 2) + 125 &&
-      mouseY > (window.innerHeight / 2) + 125 &&
-      mouseY < (window.innerHeight / 2) + 200) {
-        if (isPaused) {
-          isPaused = false;
-          isStart = false;
-          holes = [];
-          maxSpeed = 1.0;
-          ball.reset();
-          addHole();
-          changeColor();
-        }
-      }
-
+    mouseX < (window.innerWidth / 2) + 125 &&
+    mouseY > (window.innerHeight / 2) + 125 &&
+    mouseY < (window.innerHeight / 2) + 200) {
+    if (isPaused) {
+      isPaused = false;
+      isStart = false;
+      holes = [];
+      maxSpeed = 1.0;
+      ball.reset();
+      addHole();
+      changeColor();
+    }
+  }
 }
 
 function draw() {
@@ -76,7 +83,7 @@ function draw() {
   displayScore();
 
   for (let hole of holes) {
-    stroke(b,r,g);
+    stroke(b, r, g);
     hole.draw();
     if (ball.intersects(hole)) {
       isPaused = true;
@@ -84,8 +91,6 @@ function draw() {
   }
 
   if (ball.intersects(goal)) {
-    // ball.x = 50;
-    // ball.y = (window.innerWidth / 2);
     ball.reset();
     maxSpeed += 0.1;
     addHole();
@@ -93,10 +98,7 @@ function draw() {
   }
   if (isStart) {
     interact('Get the green ball\n to the pink box\n without touching the\n black balls', 'START');
-    // isStart = false;
-  }
-
-  else if (isPaused) {
+  } else if (isPaused) {
     interact(`Your score is ${holes.length}!`, 'TRY AGAIN')
   }
 
@@ -107,26 +109,26 @@ function Ball() {
   this.y = (window.innerWidth / 2);
   this.r = 25;
 
-  this.draw = function() {
+  this.draw = function () {
     fill(80, 148, 99);
     stroke(g, b, r);
     strokeWeight(10);
     ellipse(this.y, this.x, this.r * 2);
   };
 
-  this.reset = function() {
+  this.reset = function () {
     this.x = 50;
     this.y = (window.innerWidth / 2);
   }
 
-  this.move = function(moveX, moveY) {
+  this.move = function (moveX, moveY) {
     if (this.x >= 25)
       this.x += moveX;
     else
       this.x = 25;
     if (this.x <= (window.innerHeight - 25))
       this.x += moveX;
-    else 
+    else
       this.x = window.innerHeight - 25;
 
     if (this.y >= 25)
@@ -139,10 +141,8 @@ function Ball() {
       this.y = window.innerWidth - 25;
   };
 
-  this.intersects = function(obj) {
-    // console.log(this.x);
+  this.intersects = function (obj) {
     let dis = dist(this.y, this.x, obj.x, obj.y);
-    // console.log(dis);
     return (dis < this.r + obj.r);
   }
 }
@@ -152,21 +152,20 @@ function Hole(x, y, r) {
   this.y = y;
   this.r = r;
 
-  this.draw = function() {
+  this.draw = function () {
     fill(0, 0, 0);
     ellipse(this.x, this.y, this.r * 2);
   };
 }
 
-function Goal(x,y,w) {
+function Goal(x, y, w) {
   this.x = x;
   this.y = y;
   this.w = w;
   this.r = w / 2;
 
-  this.draw = function() {
-    // noStroke();
-    stroke(255,255,255);
+  this.draw = function () {
+    stroke(255, 255, 255);
     strokeWeight(5)
     fill(255, 35, 255);
     rect(this.x - this.r, this.y - this.r / 2, this.w, this.w, 10);
@@ -177,12 +176,10 @@ function Goal(x,y,w) {
 function addHole() {
   let y = Math.floor(Math.random() * Math.floor(window.innerHeight));
   let x = Math.floor(Math.random() * Math.floor(window.innerWidth));
-  // let x1 = 200;
   if (y < 120)
     y = 120;
   if (y > window.innerHeight - 120)
     y = window.innerHeight - 120
-
   let hole = new Hole(x, y, 25);
   holes.push(hole);
 }
@@ -197,15 +194,12 @@ function displayScore() {
   let score = holes.length;
   push();
   textSize(32);
-  stroke(255,35,255);
+  stroke(255, 35, 255);
   fill(148, 0, 211);
   strokeWeight(3);
   translate(50, 50);
-  // rotate(-HALF_PI);
-  // translate(-100, -100);
   text(score, 0, 0);
   pop();
-
 }
 
 function interact(infoText, btnText) {
@@ -215,7 +209,7 @@ function interact(infoText, btnText) {
   let btn = new Button(btnText);
 
   push();
-  stroke(0,0,0);
+  stroke(0, 0, 0);
   strokeWeight(10);
   fill(255, 255, 255);
   rect(wPadding, hPadding, (window.innerWidth - (wPadding * 2)), (window.innerHeight - (hPadding * 2)), 30);
@@ -223,11 +217,9 @@ function interact(infoText, btnText) {
 
   push();
   noStroke();
-  fill(0,0,0);
+  fill(0, 0, 0);
   textSize(28);
   textAlign(CENTER, CENTER);
-  // translate(150, (window.innerWidth - 50));
-  // rotate(-HALF_PI);
   text(infoText, window.innerWidth / 2, (window.innerHeight / 2) - 100);
   pop();
 
@@ -239,10 +231,10 @@ function interact(infoText, btnText) {
 function Button(btnText) {
   this.w = 250;
   this.h = 75;
-  this.x = window.innerWidth / 2 -125;
+  this.x = window.innerWidth / 2 - 125;
   this.y = (window.innerHeight / 2) + 125;
 
-  this.draw = function() {
+  this.draw = function () {
     fill(148, 0, 211);
     stroke(255, 35, 255);
     strokeWeight(3);
@@ -252,63 +244,7 @@ function Button(btnText) {
     fill(255);
     textSize(28);
     textAlign(CENTER, CENTER);
-    // translate(this.x + (this.w / 2), (window.innerWidth - 50));
-    // rotate(-HALF_PI);
     text(btnText, window.innerWidth / 2, (window.innerHeight / 2) + 162);
     pop();
-    // rect(100, 100, 100, 100);
   }
 }
-
-
-// function interact(infoText, btnText) {
-//   let wPadding = 50;
-//   let hPadding = 100;
-
-//   let btn = new Button(btnText);
-
-//   push();
-//   stroke(0,0,0);
-//   strokeWeight(10);
-//   fill(255, 255, 255);
-//   rect(wPadding, hPadding, (window.innerWidth - (wPadding * 2)), (window.innerHeight - (hPadding * 2)), 30);
-//   pop();
-
-//   push();
-//   noStroke();
-//   fill(0,0,0);
-//   textSize(28);
-//   textAlign(CENTER, CENTER);
-//   translate(150, (window.innerWidth - 50));
-//   rotate(-HALF_PI);
-//   text(infoText, 0, 0);
-//   pop();
-
-//   push();
-//   btn.draw();
-//   pop();
-// }
-
-// function Button(btnText) {
-//   this.w = 75;
-//   this.h = 250;
-//   this.x = window.innerWidth - 175;
-//   this.y = (window.innerHeight / 2) - 125;
-
-//   this.draw = function() {
-//     fill(148, 0, 211);
-//     stroke(255, 35, 255);
-//     strokeWeight(3);
-//     rect(this.x, this.y, this.w, this.h, this.w);
-//     push();
-//     noStroke();
-//     fill(255);
-//     textSize(28);
-//     textAlign(CENTER, CENTER);
-//     translate(this.x + (this.w / 2), (window.innerWidth - 50));
-//     rotate(-HALF_PI);
-//     text(btnText, 0, 0);
-//     pop();
-//     // rect(100, 100, 100, 100);
-//   }
-// }
