@@ -49,10 +49,10 @@ function setup() {
 function mousePressed() {
   console.log(mouseX);
   console.log(mouseY);
-  if (mouseX > window.innerWidth - 175 &&
-      mouseX < window.innerWidth - 100 &&
-      mouseY > (window.innerHeight / 2) - 125 &&
-      mouseY < (window.innerHeight / 2) + 125) {
+  if (mouseX > (window.innerWidth / 2) - 125 &&
+      mouseX < (window.innerWidth / 2) + 125 &&
+      mouseY > (window.innerHeight / 2) + 125 &&
+      mouseY < (window.innerHeight / 2) + 200) {
         if (isPaused) {
           isPaused = false;
           isStart = false;
@@ -92,12 +92,12 @@ function draw() {
     changeColor();
   }
   if (isStart) {
-    interact('Get the green ball to the pink \n box without touching the black balls', 'START');
+    interact('Get the green ball\n to the pink box\n without touching the\n black balls', 'START');
     // isStart = false;
   }
 
   else if (isPaused) {
-    interact(`Your score is ${holes.length}`, 'TRY AGAIN')
+    interact(`Your score is ${holes.length}!`, 'TRY AGAIN')
   }
 
 };
@@ -201,7 +201,7 @@ function displayScore() {
   fill(148, 0, 211);
   strokeWeight(3);
   translate(50, 50);
-  rotate(-HALF_PI);
+  // rotate(-HALF_PI);
   // translate(-100, -100);
   text(score, 0, 0);
   pop();
@@ -226,9 +226,9 @@ function interact(infoText, btnText) {
   fill(0,0,0);
   textSize(28);
   textAlign(CENTER, CENTER);
-  translate(150, (window.innerWidth - 50));
-  rotate(-HALF_PI);
-  text(infoText, 0, 0);
+  // translate(150, (window.innerWidth - 50));
+  // rotate(-HALF_PI);
+  text(infoText, window.innerWidth / 2, (window.innerHeight / 2) - 100);
   pop();
 
   push();
@@ -237,10 +237,10 @@ function interact(infoText, btnText) {
 }
 
 function Button(btnText) {
-  this.w = 75;
-  this.h = 250;
-  this.x = window.innerWidth - 175;
-  this.y = (window.innerHeight / 2) - 125;
+  this.w = 250;
+  this.h = 75;
+  this.x = window.innerWidth / 2 -125;
+  this.y = (window.innerHeight / 2) + 125;
 
   this.draw = function() {
     fill(148, 0, 211);
@@ -252,10 +252,63 @@ function Button(btnText) {
     fill(255);
     textSize(28);
     textAlign(CENTER, CENTER);
-    translate(this.x + (this.w / 2), (window.innerWidth - 50));
-    rotate(-HALF_PI);
-    text(btnText, 0, 0);
+    // translate(this.x + (this.w / 2), (window.innerWidth - 50));
+    // rotate(-HALF_PI);
+    text(btnText, window.innerWidth / 2, (window.innerHeight / 2) + 162);
     pop();
     // rect(100, 100, 100, 100);
   }
 }
+
+
+// function interact(infoText, btnText) {
+//   let wPadding = 50;
+//   let hPadding = 100;
+
+//   let btn = new Button(btnText);
+
+//   push();
+//   stroke(0,0,0);
+//   strokeWeight(10);
+//   fill(255, 255, 255);
+//   rect(wPadding, hPadding, (window.innerWidth - (wPadding * 2)), (window.innerHeight - (hPadding * 2)), 30);
+//   pop();
+
+//   push();
+//   noStroke();
+//   fill(0,0,0);
+//   textSize(28);
+//   textAlign(CENTER, CENTER);
+//   translate(150, (window.innerWidth - 50));
+//   rotate(-HALF_PI);
+//   text(infoText, 0, 0);
+//   pop();
+
+//   push();
+//   btn.draw();
+//   pop();
+// }
+
+// function Button(btnText) {
+//   this.w = 75;
+//   this.h = 250;
+//   this.x = window.innerWidth - 175;
+//   this.y = (window.innerHeight / 2) - 125;
+
+//   this.draw = function() {
+//     fill(148, 0, 211);
+//     stroke(255, 35, 255);
+//     strokeWeight(3);
+//     rect(this.x, this.y, this.w, this.h, this.w);
+//     push();
+//     noStroke();
+//     fill(255);
+//     textSize(28);
+//     textAlign(CENTER, CENTER);
+//     translate(this.x + (this.w / 2), (window.innerWidth - 50));
+//     rotate(-HALF_PI);
+//     text(btnText, 0, 0);
+//     pop();
+//     // rect(100, 100, 100, 100);
+//   }
+// }
