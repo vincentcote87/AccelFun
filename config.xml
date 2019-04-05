@@ -1,11 +1,11 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>AccelFun</name>
+<?xml version='0.1' encoding='utf-8'?>
+<widget id="com.vincent.hardpass" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>HardPass</name>
     <description>
-        A blank PhoneGap app.
+        An addictive game that involves avoiding obstacles to reach a goal.
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="vincentcote87@gmail.com" href="#">
+        Vincent Cote
     </author>
     <content src="index.html" />
     <access origin="*" />
